@@ -1,0 +1,17 @@
+/* Media Queries */
+$mobile: 720px;
+$desktop: 1024px;
+
+// media devices
+@mixin mobile {
+  @media screen and (max-width: #{$mobile + 1}) {
+    @content;
+  }
+}
+
+// @media screen and (min-width: #{$screen-sm-min}) and (max-width: #{$screen-sm-max}) {
+@mixin desktop {
+  @media screen and (min-width: #{$desktop}) {
+    @content;
+  }
+}
