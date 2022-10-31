@@ -1,7 +1,11 @@
 <template>
-  <div class="favorite pointer" @click.stop="toggleAndEmit">
+  <button
+    class="favorite no-bg pointer flex"
+    :aria-label="isFavorited ? 'Unfavorite' : 'Favorite'"
+    @click.stop.prevent="toggleAndEmit"
+  >
     {{ isFavorited ? '♥' : '♡' }}
-  </div>
+  </button>
 </template>
 
 <script lang="ts">
@@ -24,7 +28,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    async toggleAndEmit() {
+    async toggleAndEmit(): Promise<void> {
       this.isFavorited = !this.isFavorited
       if (this.isFavorited) {
         await this.favoritePokemon()
@@ -32,11 +36,20 @@ export default Vue.extend({
         await this.unFavoritePokemon()
       }
     },
-    async favoritePokemon() {
-      await this.$axios.$post(`https://q-exercise-api.o64ixruq9hj.us-south.codeengine.appdomain.cloud/api/rest/pokemon/${this.id}/favorite`)
+    async favoritePokemon(): Promise<void> {
+      try {
+        await this.$axios.$post(`https://q-exercise-api.o64ixruq9hj.us-south.codeengine.appdomain.cloud/api/rest/pokemon/${this.id}/favorite`)
+      } catch(e: any) {
+        console.log(e)
+      }
+      
     },
-    async unFavoritePokemon() {
-      await this.$axios.$post(`https://q-exercise-api.o64ixruq9hj.us-south.codeengine.appdomain.cloud/api/rest/pokemon/${this.id}/unfavorite`)
+    async unFavoritePokemon(): Promise<void> {
+      try {
+         await this.$axios.$post(`https://q-exercise-api.o64ixruq9hj.us-south.codeengine.appdomain.cloud/api/rest/pokemon/${this.id}/unfavorite`)
+      } catch(e: any) {
+        console.log(e)
+      }
     },
   }
 })
@@ -45,6 +58,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .favorite {
   font-size: 40px;
+  line-height: 1;
   color: #dc2626;
 }
 </style>

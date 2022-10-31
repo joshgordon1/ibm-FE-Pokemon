@@ -6,40 +6,81 @@
 export function getTypeColor(type: string) {
   switch(type) {
     case "Grass":
-      return 'border-green-700 text-green-700 '
+      return 'bg-green-700 text-white'
     case "Poison":
-      return 'border-green-200 text-green-200'
+      return 'bg-green-200 text-black'
     case "Fire":
-      return 'border-red-500 text-red-500'
+      return 'bg-red-500 text-white'
     case "Flying":
-      return 'border-blue-50 text-blue-50'
+      return 'bg-blue-100 text-black'
     case "Water":
-      return 'border-blue-600 text-blue-600'
+      return 'bg-blue-600 text-white'
     case "Bug":
-      return 'border-yellow-300 text-yellow-300'
+      return 'bg-yellow-300 text-black'
     case "Normal":
-      return 'border-black text-black'
+      return 'bg-black text-white'
     case "Electric":
-      return 'border-yellow-200 text-yellow-200'
+      return 'bg-yellow-400 text-black'
     case "Ground":
-      return 'border-yellow-800 text-yellow-800'
+      return 'bg-yellow-800 text-white'
     case "Fairy":
-      return 'border-pink-200 text-pink-200'
+      return 'bg-pink-200 text-black'
     case "Fighting":
-      return 'border-red-900 text-red-900'
+      return 'bg-red-900 text-white'
     case "Psychic":
-      return 'border-purple-400 text-purple-400'
+      return 'bg-purple-400 text-white'
     case "Rock":
-      return 'border-gray-800 text-gray-800'
+      return 'bg-gray-800 text-white'
     case "Steel":
-      return 'border-gray-200 text-gray-200'
+      return 'bg-gray-200 text-black'
     case "Ice":
-      return 'border-blue-100 text-blue-100'
+      return 'bg-blue-200 text-black'
     case "Ghost":
-      return 'border-gray-100 text-gray-100'
+      return 'bg-gray-100 text-black'
     case "Dragon":
-      return 'border-green-300 text-green-300'
+      return 'bg-green-300 text-white'
     default:
-      return 'border-black text-black'
+      return 'bg-black text-white'
+  }
+}
+
+export function getTypeBGColor(type: string) {
+  switch(type) {
+    case "Grass":
+      return 'bg-green-700'
+    case "Poison":
+      return 'bg-green-200'
+    case "Fire":
+      return 'bg-red-500'
+    case "Flying":
+      return 'bg-blue-100'
+    case "Water":
+      return 'bg-blue-600'
+    case "Bug":
+      return 'bg-yellow-300'
+    case "Normal":
+      return 'bg-black'
+    case "Electric":
+      return 'bg-yellow-400'
+    case "Ground":
+      return 'bg-yellow-800'
+    case "Fairy":
+      return 'bg-pink-200'
+    case "Fighting":
+      return 'bg-red-900'
+    case "Psychic":
+      return 'bg-purple-400'
+    case "Rock":
+      return 'bg-gray-800'
+    case "Steel":
+      return 'bg-gray-200'
+    case "Ice":
+      return 'bg-blue-200'
+    case "Ghost":
+      return 'bg-gray-100'
+    case "Dragon":
+      return 'bg-green-300'
+    default:
+      return 'bg-black'
   }
 }

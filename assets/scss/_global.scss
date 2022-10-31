@@ -1,23 +1,27 @@
-.flex {
-  display: flex;
-}
-.flex-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.types {
-  gap: 1rem;
-  .type {
-    padding: 8px;
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 3px;
-  }
-}
-
 .pointer {
   cursor: pointer;
+}
+
+.horizontal-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+}
+
+.pokeid {
+  font-weight: 400;
+  margin-left: 5px;
+}
+
+button {
+  border-radius: 3px;
+  padding: 4px 6px;
+  &:not(.no-bg) {
+    background-color: lightgray;
+    &:hover {
+      background-color: grey;
+    }
+  }
 }
 
 h1, h2, h3, h4, h5 {

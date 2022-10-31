@@ -33,6 +33,8 @@ export default Vue.extend({
     border-width: 1px;
     border-style: solid;
     border-radius: 3px;
+    font-weight: 700;
+    font-size: 1rem;
   }
 }
 </style>
