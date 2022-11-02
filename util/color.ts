@@ -10,7 +10,7 @@ export function getTypeColor(type: string) {
     case "Poison":
       return 'bg-green-200 text-black'
     case "Fire":
-      return 'bg-red-500 text-white'
+      return 'bg-red-600 text-white'
     case "Flying":
       return 'bg-blue-100 text-black'
     case "Water":
@@ -28,7 +28,7 @@ export function getTypeColor(type: string) {
     case "Fighting":
       return 'bg-red-900 text-white'
     case "Psychic":
-      return 'bg-purple-400 text-white'
+      return 'bg-indigo-700 text-white'
     case "Rock":
       return 'bg-gray-800 text-white'
     case "Steel":
@@ -47,40 +47,33 @@ export function getTypeColor(type: string) {
 export function getTypeBGColor(type: string) {
   switch(type) {
     case "Grass":
-      return 'bg-green-700'
+      return 'bg-green-600'
     case "Poison":
-      return 'bg-green-200'
+    case "Dragon":
+      return 'bg-green-400'
+    case "Flying":
+    case "Water":
+    case "Ice":
+      return 'bg-blue-500'
+    case "Ground":
+      return 'bg-yellow-700'
+    case "Bug":
+    case "Electric":
+      return 'bg-yellow-200'
+    case "Fairy":
+      return 'bg-pink-100'
     case "Fire":
       return 'bg-red-500'
-    case "Flying":
-      return 'bg-blue-100'
-    case "Water":
-      return 'bg-blue-600'
-    case "Bug":
-      return 'bg-yellow-300'
-    case "Normal":
-      return 'bg-black'
-    case "Electric":
-      return 'bg-yellow-400'
-    case "Ground":
-      return 'bg-yellow-800'
-    case "Fairy":
-      return 'bg-pink-200'
     case "Fighting":
-      return 'bg-red-900'
+      return 'bg-red-700'
     case "Psychic":
-      return 'bg-purple-400'
+      return 'bg-purple-300'
     case "Rock":
-      return 'bg-gray-800'
     case "Steel":
-      return 'bg-gray-200'
-    case "Ice":
-      return 'bg-blue-200'
     case "Ghost":
-      return 'bg-gray-100'
-    case "Dragon":
-      return 'bg-green-300'
+    case "Normal":
+      return 'bg-gray-50'
     default:
-      return 'bg-black'
+      return 'bg-gray-50'
   }
 }

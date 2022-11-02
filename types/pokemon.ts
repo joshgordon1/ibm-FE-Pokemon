@@ -28,3 +28,10 @@ export type Pokemon = {
   "sound":  string;
   "isFavorite": boolean;
 }
+
+export type ApiResponse = {
+  count: number;
+  items: Pokemon[];
+  limit: number;
+  offset: number;
+}

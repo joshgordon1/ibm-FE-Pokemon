@@ -3,6 +3,10 @@
     <header class="">
       <div class="header-content">
         <nuxt-link to="/">All Pokemon</nuxt-link>
+        <input v-model="searchQuery" type="text">
+        <button @click="search()">Search</button>
+        <button @click="clear()">Clear Results</button>
+        <button @click="viewFavorites()">Favorites</button>
       </div>
     </header>
     <div class="main-content">
@@ -23,9 +27,21 @@ export default Vue.extend({
   name: 'LayoutDefault',
   data() {
     return {
-      pokemon: []
+      searchQuery: '',
     };
   },
+  
+  methods: {
+    async search() {
+      await this.$store.dispatch('searchPokemon', this.searchQuery)
+    },
+    async viewFavorites() {
+      await this.$store.dispatch('searchFavorites')
+    },
+    async clear() {
+      await this.$store.dispatch('clear')
+    }
+  }
 })
 </script>
 
@@ -37,6 +53,9 @@ header {
   z-index: 5;
   top: 0;
   padding: 1rem 0;
+  input {
+    color: black;
+  }
 }
 footer {
   background-color: darkgray;

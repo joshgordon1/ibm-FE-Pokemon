@@ -1,6 +1,6 @@
 <template>
   <div v-if="pokemon" class="pokemon-page flex flex-col">
-    <div class="flex next-prev">
+    <div class="flex between next-prev">
       <button :disabled="pokemon.number === 1" @click="navigatePokemon(true)">← Previous</button>
       <button @click="navigatePokemon(false)">Next →</button>
     </div>
@@ -104,9 +104,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .pokemon-page, .pokemon {
   gap: 1rem;
-}
-.next-prev {
-  justify-content: space-between;
 }
 .audio {
   width: fit-content;

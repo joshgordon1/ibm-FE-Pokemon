@@ -42,14 +42,17 @@ export default Vue.extend({
 </script> 
 
 <style lang="scss" scoped>
+// TODO - improve mobile styles
 .pokemon-card {
   border: 10px solid #ffcb05;
   border-radius: 12px;
   padding: 0.75rem;
   gap: 0.75rem;
-  width: 150px;
+  width: 200px;
+  min-height: 320px;
   @include desktop {
     width: 300px;
+    min-height: 450px;
   }
   &:hover {
     transform: scale(1.05);
