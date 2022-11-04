@@ -1,19 +1,25 @@
 <template>
-  <div>
-    <h1 v-if="searchMessage">{{searchMessage}}</h1>
+  <div class="home-page">
 
-    <!-- TODO - button show logic -->
+    <div class="flex between mb-4">
+      <h1 v-if="searchMessage">{{searchMessage}}</h1>
+      <button @click="clear()">Clear Filters/Search</button>
+    </div>
+
     <div class="flex between next-prev mb-4">
       <button :disabled="currentPage === 1" @click="navigatePage(false)">← Previous Page</button>
       <button :disabled="currentPage * limit > count" @click="navigatePage(true)">Next Page →</button>
     </div>
-    <button @click="clear()">Clear Results</button>
 
     <div v-if="loading" class="items-container flex">
       <div v-for="i in limit" :key="i + 'load'" class="card-loading"/>
     </div>
     <div v-else-if="dataAvail" class="items-container flex">
       <PokeCard v-for="poke in displayPokemonData" :key="poke.id" :pokemon="poke"/>
+    </div>
+    <div class="flex between next-prev mt-4">
+      <button :disabled="currentPage === 1" @click="navigatePage(false)">← Previous Page</button>
+      <button :disabled="currentPage * limit > count" @click="navigatePage(true)">Next Page →</button>
     </div>
   </div>
 </template>
@@ -22,32 +28,44 @@
 import Vue from 'vue'
 import { mapGetters, mapState } from 'vuex'
 import { Pokemon } from '~/types/pokemon'
+import { RootState, RooteStateMapped } from '~/store'
 
 export default Vue.extend({
   name: 'IndexPage',
-  async fetch() {
-    await this.$store.dispatch('baseRequest')
-  },
   computed: {
-    ...mapGetters(['count']),
-    ...mapState(['searchMessage', 'currentPage', 'basePokemonData', 'pokemon', 'limit', 'loading']),
     displayPokemonData(): Pokemon[] | undefined {
       return this.pokemon?.items || this.basePokemonData?.items
     },
     dataAvail(): boolean {
       return !!this.displayPokemonData?.length
-    }
+    },
+    ...mapGetters(['count']),
+    ...(mapState([
+      'searchMessage',
+      'currentPage',
+      'basePokemonData',
+      'pokemon',
+      'limit',
+      'loading',
+      'viewingFavorites',
+      'selectedType'
+    ]) as RooteStateMapped<RootState>),
   },
   methods: {
-    async navigatePage(increment: boolean) {
+    async navigatePage(increment: boolean): Promise<void> {
       if (increment) {
         this.$store.commit('incrementPage')
       } else {
         this.$store.commit('decrementPage')
       }
-      await this.$store.dispatch('navigatePage')
+      // TODO - check logic
+      await this.$store.dispatch('getPokemon', {
+        isFavorite: this.viewingFavorites as boolean,
+        type: this.selectedType as string,
+        errorMessage: 'Error Navigating Page'
+      })
     },
-    async clear() {
+    async clear(): Promise<void> {
       await this.$store.dispatch('clear')
     }
   }
@@ -58,6 +76,8 @@ export default Vue.extend({
 .items-container {
   gap: 1rem;
   flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1.5rem;
 }
 .card-loading {
   background-color: grey;

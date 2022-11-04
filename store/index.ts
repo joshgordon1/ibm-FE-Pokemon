@@ -2,8 +2,6 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 // import Vue from 'vue'
 import { ApiResponse } from '~/types/pokemon'
 
-
-
 export const state = () => ({
   pokemon: undefined as ApiResponse | undefined,
   basePokemonData: undefined as ApiResponse | undefined,
@@ -11,10 +9,16 @@ export const state = () => ({
   apiBaseUrl: 'https://q-exercise-api.o64ixruq9hj.us-south.codeengine.appdomain.cloud/api/rest/pokemon/',
   limit: 20,
   currentPage: 1,
-  loading: false
-})
+  viewingFavorites: false,
+  loading: false,
+  types: undefined as string[] | undefined,
+  selectedType: ''
+});
 
 export type RootState = ReturnType<typeof state>
+export type RooteStateMapped<S> = {
+  [K in keyof S]: () => S[K]
+}
 
 export const getters: GetterTree<RootState, RootState> = {
   count: state => state?.pokemon?.count,
@@ -25,12 +29,21 @@ export const mutations: MutationTree<RootState> = {
     state.pokemon = undefined
     state.pokemon = pokemon
   },
+  setTypes(state, types: string[]) {
+    state.types = types
+  },
+  setType(state, type: string) {
+    state.selectedType = type
+  },
   setBasePokemon(state, pokemon: ApiResponse) {
     state.basePokemonData = undefined
     state.basePokemonData = pokemon
   },
   setSearchMessage(state, message) {
     state.searchMessage = message
+  },
+  setViewingFavorites(state, isViewingFav) {
+    state.viewingFavorites = isViewingFav
   },
   setPage(state, pageNum) {
     state.currentPage = pageNum
@@ -46,26 +59,34 @@ export const mutations: MutationTree<RootState> = {
   },
 }
 
-// TODO - LIMITS
 export const actions: ActionTree<RootState, RootState> = {
   async baseRequest({ commit, state }): Promise<void> {
     try {
       commit('setLoading', true)
-      const pokemon = await this.$axios.$get(`${state.apiBaseUrl}?limit=${state.limit}`)
+      const [pokemon, types] = await Promise.all([
+        this.$axios.$get(`${state.apiBaseUrl}?limit=${state.limit}`),
+        this.$axios.$get('https://q-exercise-api.o64ixruq9hj.us-south.codeengine.appdomain.cloud/api/rest/pokemon-types')
+      ])
       commit('setPokemon', pokemon)
+      commit('setTypes', types)
       commit('setBasePokemon', pokemon)
+      commit('setSearchMessage', `${pokemon?.count} Results`)
     } catch (error) {
       console.log('Error Fetching Base Request', error)
     } finally {
       commit('setLoading', false)
     }
   },
-  async getPokemon({ commit, state }, { isFavorite = false, searchQuery = undefined, errorMessage = 'Error Fetching Pokemon' }): Promise<void> {
+  async getPokemon({ commit, state }, { isFavorite = false, searchQuery = undefined, errorMessage = 'Error Fetching Pokemon', type = undefined }): Promise<void> {
     try {
       commit('setLoading', true)
-      const pokemon = await this.$axios.$get(`${state.apiBaseUrl}?limit=${state.limit}&search=${searchQuery}`)
+      const searchParam = searchQuery ? `&search=${searchQuery}` : ''
+      const fav = isFavorite ? '&isFavorite=true' : ''
+      const off = `&offset=${(state.currentPage - 1) * state.limit}`
+      const pokeType = type ? `&type=${type}` : ''
+      const pokemon = await this.$axios.$get(`${state.apiBaseUrl}?limit=${state.limit}${searchParam + fav + off + pokeType}`)
       commit('setPokemon', pokemon)
-      commit('setSearchMessage', `${pokemon?.items?.count} Results`)
+      commit('setSearchMessage', `${pokemon?.count} Results`)
     } catch (error) {
       commit('setSearchMessage', 'No Results')
       console.log(errorMessage, error)
@@ -73,46 +94,10 @@ export const actions: ActionTree<RootState, RootState> = {
       commit('setLoading', false)
     }
   },
-  async searchPokemon({ commit, state }, searchQuery: string): Promise<void> {
-    try {
-      commit('setLoading', true)
-      const pokemon = await this.$axios.$get(`${state.apiBaseUrl}?search=${searchQuery}&limit=${state.limit}`)
-      commit('setPokemon', pokemon)
-      commit('setSearchMessage', `${pokemon?.items?.count} Results`)
-    } catch (error) {
-      commit('setSearchMessage', 'No Results')
-      console.log('Error Fetching Search Param', error)
-    } finally {
-      commit('setLoading', false)
-    }
-  },
-  async searchFavorites({ commit, state }): Promise<void> {
-    try {
-      commit('setLoading', true)
-      const pokemon = await this.$axios.$get(`${state.apiBaseUrl}?isFavorite=true&offset=${(state.currentPage - 1) * state.limit}&limit=${state.limit}`)
-      commit('setPokemon', pokemon)
-      commit('setSearchMessage', `${pokemon?.items?.count} Results`)
-    } catch (error) {
-      commit('setSearchMessage', 'No Results')
-      console.log('Error Fetching Favorites', error)
-    } finally {
-      commit('setLoading', false)
-    }
-  },
-  async navigatePage({commit, state }) {
-    try {
-      commit('setLoading', true)
-      const pokemon = await this.$axios.$get(`${state.apiBaseUrl}?offset=${(state.currentPage - 1) * state.limit}&limit=${state.limit}`)
-      commit('setPokemon', pokemon)
-    } catch (error) {
-      console.log('Error Navigating Pages', error)
-    } finally {
-      commit('setLoading', false)
-    }
-  },
-  clear({ commit }): void {
+  clear({ commit, state }): void {
     commit('setPokemon', null)
-    commit('setSearchMessage', '')
+    commit('setSearchMessage', `${state?.basePokemonData?.count} Results`)
     commit('setPage', 1)
+    commit('setViewingFavorites', false)
   },
 }

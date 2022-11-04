@@ -2,19 +2,24 @@
   <div class="default-layout">
     <header class="">
       <div class="header-content">
-        <nuxt-link to="/">All Pokemon</nuxt-link>
-        <input v-model="searchQuery" type="text">
-        <button @click="search()">Search</button>
-        <button @click="clear()">Clear Results</button>
-        <button @click="viewFavorites()">Favorites</button>
+        <div to="/" class="main-logo" @click="navHome()">
+          <img src="https://assets.pokemon.com/assets/cms2/img/misc/gus/buttons/logo-pokemon-79x45.png" alt="site_slug">
+        </div>
+        <input v-model="searchQuery" type="text" placeholder="Search" aria-placeholder="Search" @keypress.enter="search()">
+        <button class="search-btn" @click="search()">Search</button>
+        <button class="fav-btn" @click="viewFavorites()">Favorites</button>
+        <select v-if="types && types.length" id="types" v-model="type" name="types">
+          <option value="">Select Type</option>
+          <option v-for="typeName in types" :key="typeName" :value="typeName">{{ typeName }}</option>
+        </select>
       </div>
     </header>
     <div class="main-content">
       <Nuxt />
     </div>
     <footer class="">
-      <div class="footer-content">
-        <nuxt-link to="/">Home</nuxt-link>
+      <div class="footer-content flex center">
+        Website made by Josh Gordon - 2022
       </div>
     </footer>
   </div>
@@ -22,24 +27,56 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapState } from 'vuex'
 
 export default Vue.extend({
   name: 'LayoutDefault',
   data() {
     return {
       searchQuery: '',
+      type: '',
     };
   },
-  
+  async fetch(): Promise<void> {
+    await this.$store.dispatch('baseRequest')
+  },
+  computed: {
+    ...mapState(['types','viewingFavorites',]),
+  },
+  watch: {
+    async type(newType: string, oldtype: string): Promise<void> {
+      if (newType !== oldtype) {
+        // TODO - handle different page types
+        await this.navHome()
+        this.$store.commit('setType', newType)
+        await this.$store.dispatch('getPokemon', {
+          type: newType,
+          errorMessage: 'Error Fetching Pokemon By Type'
+        })
+      }
+    }
+  },
   methods: {
-    async search() {
-      await this.$store.dispatch('searchPokemon', this.searchQuery)
+    async search(): Promise<void> {
+      await this.navHome()
+      await this.$store.dispatch('getPokemon', {
+        searchQuery: this.searchQuery,
+        errorMessage: 'Error Fetching Search Param'
+      })
     },
-    async viewFavorites() {
-      await this.$store.dispatch('searchFavorites')
+    async viewFavorites(): Promise<void> {
+      await this.navHome()
+      await this.$store.dispatch('getPokemon', {
+        isFavorite: true,
+        errorMessage: 'Error Fetching Favorites'
+      })
     },
-    async clear() {
+    async clear(): Promise<void> {
       await this.$store.dispatch('clear')
+    },
+    async navHome(): Promise<void> {
+      await this.clear()
+      if (this.$route.path !== '/') this.$router.push('/')
     }
   }
 })
@@ -53,7 +90,7 @@ header {
   z-index: 5;
   top: 0;
   padding: 1rem 0;
-  input {
+  input, select {
     color: black;
   }
 }
@@ -70,6 +107,37 @@ footer {
   }
   @include xl {
     max-width: calc(#{$screen-xl-min} - 2rem);
+  }
+}
+.header-content {
+  display: grid;
+  gap: 1rem;
+  grid-template-areas: "logo search searchButton"
+                          "favButton select select";
+  @include mobile {
+    grid-template-areas: "logo search search"
+                          "favButton select select";
+  }
+  @include desktop {
+    grid-template-areas: "logo search searchButton select favButton";
+  }
+  .main-logo {
+    grid-area: logo;
+  }
+  input {
+    grid-area: search;
+  }
+  .search-btn {
+    grid-area: searchButton;
+    @include mobile {
+      display: none;
+    }
+  }
+  .fav-btn {
+    grid-area: favButton;
+  }
+  select {
+    grid-area: select;
   }
 }
 .main-content {

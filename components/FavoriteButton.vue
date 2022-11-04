@@ -1,6 +1,6 @@
 <template>
   <button
-    class="favorite no-bg pointer flex"
+    class="favorite no-bg pointer"
     :aria-label="isFavorited ? 'Unfavorite' : 'Favorite'"
     @click.stop.prevent="toggleAndEmit"
   >
@@ -57,8 +57,11 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .favorite {
-  font-size: 40px;
+  font-size: 30px;
   line-height: 1;
   color: #dc2626;
+  @include desktop {
+    font-size: 40px;
+  }
 }
 </style>

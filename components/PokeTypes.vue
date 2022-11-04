@@ -27,14 +27,22 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .types {
-  gap: 1rem;
+  gap: 0.5rem;
   .type {
-    padding: 8px;
+    padding: 4px 6px;
+    font-size: 0.75rem;
     border-width: 1px;
     border-style: solid;
     border-radius: 3px;
     font-weight: 700;
-    font-size: 1rem;
+    height: fit-content;
+  }
+  @include desktop {
+    gap: 1rem;
+    .type {
+      padding: 6px 8px;
+      font-size: 1rem;
+    }
   }
 }
 </style>

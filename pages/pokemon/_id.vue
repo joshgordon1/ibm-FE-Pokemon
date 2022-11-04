@@ -7,7 +7,7 @@
     <div class="flex flex-col pokemon">
       <div class="header flex">
         <h2 class="flex">
-          {{ pokemon.name }}
+          <div class="name">{{ pokemon.name }}</div>
           <div class="pokeid text-gray-300">#{{ pokemon.id}}</div>
         </h2>
         <FavoriteButton :id="pokemon.id" :favorited="pokemon.isFavorite" />
@@ -28,16 +28,17 @@
           {{ pokemon.maxHP }}
         </div>
       </div>
-      <div>
-        <h3>Height</h3>
-        Max: {{ pokemon.height.maximum }}
-        Min: {{ pokemon.height.minimum }}
+      <div class="flex bg-gray-300">
+        <div class="height flex flex-col center border-gray-900">
+          <h3>Height</h3>
+          {{ pokemon.height.maximum }} - {{ pokemon.height.minimum }}
+        </div>
+        <div class="weight flex flex-col center border-gray-900">
+          <h3>Weight</h3>
+          {{ pokemon.weight.maximum }} - {{ pokemon.weight.minimum }}
+        </div>
       </div>
-      <div>
-        <h3>Weight</h3>
-        Max: {{ pokemon.weight.maximum }}
-        Min: {{ pokemon.weight.minimum }}
-      </div>
+      
     </div>
     <div class="evo-container flex flex-col">
       <h3>Previous Evolutions</h3>
@@ -105,6 +106,10 @@ export default Vue.extend({
 .pokemon-page, .pokemon {
   gap: 1rem;
 }
+.pokemon-page {
+  max-width: 920px;
+  margin: 0 auto;
+}
 .audio {
   width: fit-content;
 }
@@ -115,7 +120,10 @@ export default Vue.extend({
   justify-content: space-between;
   align-items: center;
   h2 {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
+    @include desktop {
+      font-size: 2.5rem;
+    }
   }
 }
 .max-cp, .max-hp {
@@ -127,6 +135,10 @@ export default Vue.extend({
   max-width: 300px;
   width: 100%;
   color: white;
+}
+.height, .weight {
+  width: 50%;
+  border-width: 1px;
 }
 .none-card {
   padding: 2rem;
