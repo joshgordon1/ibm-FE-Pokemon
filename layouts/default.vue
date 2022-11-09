@@ -46,7 +46,6 @@ export default Vue.extend({
   watch: {
     async type(newType: string, oldtype: string): Promise<void> {
       if (newType !== oldtype) {
-        // TODO - handle different page types
         await this.navHome()
         this.$store.commit('setType', newType)
         await this.$store.dispatch('getPokemon', {

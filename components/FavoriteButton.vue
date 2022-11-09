@@ -28,8 +28,11 @@ export default Vue.extend({
     }
   },
   methods: {
-    async toggleAndEmit(): Promise<void> {
+    toggleFav(): void {
       this.isFavorited = !this.isFavorited
+    },
+    async toggleAndEmit(): Promise<void> {
+      this.toggleFav();
       if (this.isFavorited) {
         await this.favoritePokemon()
       } else {

@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="`/pokemon/${pokemon.id}`" :class="['pokemon-card flex flex-col', { 'mini-card' : miniCard}, typeColor(mainType)]">
+  <NuxtLink v-if="pokemon" :to="`/pokemon/${pokemon.id}`" :class="['pokemon-card flex flex-col', { 'mini-card' : miniCard}, typeColor(mainType)]">
     <div class="header flex">
       <h2 class="name">{{ pokemon.name }}</h2>
       <div class="pokeid text-gray-300">#{{ pokemon.id}}</div>
@@ -40,7 +40,6 @@ export default Vue.extend({
 </script> 
 
 <style lang="scss" scoped>
-// TODO - improve mobile styles
 .pokemon-card {
   border: 10px solid #ffcb05;
   border-radius: 12px;

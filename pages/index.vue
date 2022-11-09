@@ -28,7 +28,7 @@
 import Vue from 'vue'
 import { mapGetters, mapState } from 'vuex'
 import { Pokemon } from '~/types/pokemon'
-import { RootState, RooteStateMapped } from '~/store'
+import { RootState, RootStateMapped } from '~/store'
 
 export default Vue.extend({
   name: 'IndexPage',
@@ -49,7 +49,7 @@ export default Vue.extend({
       'loading',
       'viewingFavorites',
       'selectedType'
-    ]) as RooteStateMapped<RootState>),
+    ]) as RootStateMapped<RootState>),
   },
   methods: {
     async navigatePage(increment: boolean): Promise<void> {
@@ -58,7 +58,6 @@ export default Vue.extend({
       } else {
         this.$store.commit('decrementPage')
       }
-      // TODO - check logic
       await this.$store.dispatch('getPokemon', {
         isFavorite: this.viewingFavorites as boolean,
         type: this.selectedType as string,

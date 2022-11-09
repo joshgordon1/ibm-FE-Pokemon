@@ -16,7 +16,7 @@ export const state = () => ({
 });
 
 export type RootState = ReturnType<typeof state>
-export type RooteStateMapped<S> = {
+export type RootStateMapped<S> = {
   [K in keyof S]: () => S[K]
 }
 
