@@ -65,6 +65,7 @@ export default Vue.extend({
     },
     async viewFavorites(): Promise<void> {
       await this.navHome()
+      this.$store.commit('setViewingFavorites', true)
       await this.$store.dispatch('getPokemon', {
         isFavorite: true,
         errorMessage: 'Error Fetching Favorites'

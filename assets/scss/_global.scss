@@ -12,6 +12,18 @@ body {
   overflow-x: auto;
 }
 
+.mob-hide {
+  @include mobile {
+    display: none;
+  }
+}
+
+.desk-hide {
+  @include desktop {
+    display: none;
+  }
+}
+
 .between {
   justify-content: space-between;
 }

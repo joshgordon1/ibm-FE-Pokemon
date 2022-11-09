@@ -1,8 +1,8 @@
 <template>
   <div v-if="pokemon" class="pokemon-page flex flex-col">
     <div class="flex between next-prev">
-      <button :disabled="pokemon.number === 1" @click="navigatePokemon(true)">← Previous</button>
-      <button @click="navigatePokemon(false)">Next →</button>
+      <button :disabled="pokemon.number === 1" @click="navigatePokemon(true)">← <span class="mob-hide">Previous</span></button>
+      <button @click="navigatePokemon(false)"><span class="mob-hide">Next</span> →</button>
     </div>
     <div class="flex flex-col pokemon">
       <div class="header flex">
@@ -74,7 +74,7 @@ export default Vue.extend({
       pokemon: null as Pokemon | null,
     };
   },
-  async fetch() {
+  async fetch(): Promise<void> {
     this.pokemon = await this.$axios.$get(`https://q-exercise-api.o64ixruq9hj.us-south.codeengine.appdomain.cloud/api/rest/pokemon/${this.$route?.params?.id}`)
   },
   computed: {
@@ -89,7 +89,7 @@ export default Vue.extend({
     playAudio(url: string): void {
       new Audio(url).play();
     },
-    navigatePokemon(prev: boolean) {
+    navigatePokemon(prev: boolean): void {
       let currentNumber = this.pokemon?.number
       if (currentNumber) {
         prev ? currentNumber-- : currentNumber++;

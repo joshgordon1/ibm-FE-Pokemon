@@ -1,6 +1,17 @@
 # ibm-FE-Pokemon
 A sample application for IBM coding challenge
 
+## Project Notes
+For this Project, I decided to use Nuxt, since that is what most of my professional experience is in.
+
+I did want to try something different though, so I the Single Page App setup for this project. This removes server-side rendering, which I didn't think was important for this project since there are no SEO/performance restrictions. I also used SCSS/SASS for the style so I could utilize mixins and I prefer the look and feel of how SCSS is written compared to vanilla CSS.
+
+I tried tailwindcss for out of the box style, I wanted to try one of these types of libraries since I have only used custom styles in my professional projects. After trying it out, I found it to be convenient for a few things, but the benefits didn't outweigh the customization and control I usually have just writing it myself.
+
+I wanted to utilize a Vuex store for this app, I thought it made the most sense to control the data/functions in one place. I think this also made the code much more concise and reduced the instances of repeated code across the app.
+
+This was actually the first time I had to write Unit tests for Vue Components, I used jest because I know it is popular (usually means above average documentation) and because Vue CLI can generate the Nuxt app with Jest installed and setup out of the box. I was able to implement a few tests and do some experimentation but due to time limitations I wasn't able to be as thorough as I would have liked. This is definitely a skill that I would like to improve on.
+
 ## Build Setup
 
 ```bash

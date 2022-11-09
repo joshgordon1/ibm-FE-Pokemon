@@ -32,7 +32,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    typeColor(type: string) {
+    typeColor(type: string): string {
       return getTypeBGColor(type)
     }
   }

@@ -7,8 +7,8 @@
     </div>
 
     <div class="flex between next-prev mb-4">
-      <button :disabled="currentPage === 1" @click="navigatePage(false)">← Previous Page</button>
-      <button :disabled="currentPage * limit > count" @click="navigatePage(true)">Next Page →</button>
+      <button :disabled="currentPage === 1" @click="navigatePage(false)">← <span class="mob-hide">Previous Page</span></button>
+      <button :disabled="currentPage * limit > count" @click="navigatePage(true)"><span class="mob-hide">Next Page</span> →</button>
     </div>
 
     <div v-if="loading" class="items-container flex">
@@ -17,9 +17,13 @@
     <div v-else-if="dataAvail" class="items-container flex">
       <PokeCard v-for="poke in displayPokemonData" :key="poke.id" :pokemon="poke"/>
     </div>
+    <div v-else class="no-data">
+      <div class="flex center">- No Data Available -</div>
+    </div>
     <div class="flex between next-prev mt-4">
-      <button :disabled="currentPage === 1" @click="navigatePage(false)">← Previous Page</button>
-      <button :disabled="currentPage * limit > count" @click="navigatePage(true)">Next Page →</button>
+      <button :disabled="currentPage === 1" @click="navigatePage(false)">← <span class="mob-hide">Previous Page</span></button>
+      <Pagination />
+      <button :disabled="currentPage * limit > count" @click="navigatePage(true)"><span class="mob-hide">Next Page</span> →</button>
     </div>
   </div>
 </template>
@@ -77,6 +81,14 @@ export default Vue.extend({
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 1.5rem;
+}
+.no-data {
+  height: 40vh;
+  text-align: center;
+  text-transform: uppercase;
+  .flex {
+    height: -webkit-fill-available;
+  }
 }
 .card-loading {
   background-color: grey;

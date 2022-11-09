@@ -25,36 +25,36 @@ export const getters: GetterTree<RootState, RootState> = {
 }
 
 export const mutations: MutationTree<RootState> = {
-  setPokemon(state, pokemon: ApiResponse) {
+  setPokemon(state: RootState, pokemon: ApiResponse) {
     state.pokemon = undefined
     state.pokemon = pokemon
   },
-  setTypes(state, types: string[]) {
+  setTypes(state: RootState, types: string[]) {
     state.types = types
   },
-  setType(state, type: string) {
+  setType(state: RootState, type: string) {
     state.selectedType = type
   },
-  setBasePokemon(state, pokemon: ApiResponse) {
+  setBasePokemon(state: RootState, pokemon: ApiResponse) {
     state.basePokemonData = undefined
     state.basePokemonData = pokemon
   },
-  setSearchMessage(state, message) {
+  setSearchMessage(state: RootState, message: string) {
     state.searchMessage = message
   },
-  setViewingFavorites(state, isViewingFav) {
+  setViewingFavorites(state: RootState, isViewingFav: boolean) {
     state.viewingFavorites = isViewingFav
   },
-  setPage(state, pageNum) {
+  setPage(state: RootState, pageNum: number) {
     state.currentPage = pageNum
   },
-  incrementPage(state) {
+  incrementPage(state: RootState) {
     state.currentPage = state.currentPage + 1
   },
-  decrementPage(state) {
+  decrementPage(state: RootState) {
     state.currentPage = state.currentPage - 1
   },
-  setLoading(state, isLoading) {
+  setLoading(state: RootState, isLoading: boolean) {
     state.loading = isLoading
   },
 }

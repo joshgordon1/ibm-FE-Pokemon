@@ -18,7 +18,7 @@ export default Vue.extend({
     }
   },
    methods: {
-    typeColor(type: string) {
+    typeColor(type: string): string {
       return getTypeColor(type)
     }
   }
