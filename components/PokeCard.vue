@@ -48,6 +48,7 @@ export default Vue.extend({
   @include mobile {
     &:not(.mini-card) {
       display: grid;
+      width: 100%;
       grid-template-areas: "image header"
                             "image types";
       grid-template-columns: 30% calc(70% - 13px);
@@ -56,6 +57,7 @@ export default Vue.extend({
       }
       .image {
         grid-area: image;
+        max-height: 150px;
       }
       .types {
         grid-area: types;
@@ -101,7 +103,7 @@ export default Vue.extend({
   height: auto;
   width: auto;
   margin: auto auto;
-  max-height: 300px;
+  max-height: 200px;
   border: 4px solid #B3A125;
   border-radius: 4px;
   background-color: #424242;
