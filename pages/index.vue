@@ -22,7 +22,7 @@
     </div>
     <div class="flex between next-prev mt-4">
       <button :disabled="currentPage === 1" @click="navigatePage(false)">← <span class="mob-hide">Previous Page</span></button>
-      <Pagination />
+      <FooterPagination />
       <button :disabled="currentPage * limit > count" @click="navigatePage(true)"><span class="mob-hide">Next Page</span> →</button>
     </div>
   </div>
