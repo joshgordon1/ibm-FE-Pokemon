@@ -1,6 +1,13 @@
 <template>
   <div v-if="allPages" class="flex types">
-    <div v-for="page in allPages" :key="page" :class="['page', {'selected' : currentPage === page}]" @click="setPage(page)">
+    <div
+      v-for="page in allPages"
+      :key="page"
+      :class="['page pointer', {'selected' : currentPage === page}]"
+      role="button"
+      :aria-label="`Navigate to page ${page}`"
+      @click="setPage(page)
+    ">
       {{ page }}
     </div>
   </div>
@@ -16,8 +23,6 @@ export default Vue.extend({
     ...(mapState([
       'currentPage',
       'pokemon',
-      'viewingFavorites',
-      'selectedType'
     ]) as RootStateMapped<RootState>),
     allPages(): number {
       return this.$store.getters?.count ? Math.floor(this.$store.getters.count / this.$store.state.limit) + 1 : 0
@@ -27,8 +32,6 @@ export default Vue.extend({
     async setPage(num: number): Promise<void> {
       this.$store.commit('setPage', num)
       await this.$store.dispatch('getPokemon', {
-        isFavorite: this.viewingFavorites,
-        type: this.selectedType,
         errorMessage: 'Error Navigating Page'
       })
     }

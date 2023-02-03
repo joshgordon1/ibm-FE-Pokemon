@@ -75,7 +75,7 @@ export default Vue.extend({
     };
   },
   async fetch(): Promise<void> {
-    this.pokemon = await this.$axios.$get(`https://q-exercise-api.o64ixruq9hj.us-south.codeengine.appdomain.cloud/api/rest/pokemon/${this.$route?.params?.id}`)
+    this.pokemon = await this.$store.dispatch('getPokemonPage', this.$route.params?.id)
   },
   computed: {
     evolutions(): PokemonLink[] | undefined {

@@ -2,7 +2,7 @@
   <NuxtLink v-if="pokemon" :to="`/pokemon/${pokemon.id}`" :class="['pokemon-card flex flex-col', { 'mini-card' : miniCard}, typeColor(mainType)]">
     <div class="header flex">
       <h2 class="name">{{ pokemon.name }}</h2>
-      <div class="pokeid text-gray-300">#{{ pokemon.id}}</div>
+      <div class="pokeid text-black">#{{ pokemon.id}}</div>
       <favorite-button :id="pokemon.id" :favorited="pokemon.isFavorite" />
     </div>
     <img :src="pokemon.image" :alt="pokemon.name" class="image">

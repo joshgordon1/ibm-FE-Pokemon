@@ -2,8 +2,9 @@
   <div class="home-page">
 
     <div class="flex between mb-4">
-      <h1 v-if="searchMessage">{{searchMessage}}</h1>
-      <button @click="clear()">Clear Filters/Search</button>
+      <h2 v-if="searchMessage">{{searchMessage}}</h2>
+      <h1>{{ pageTitle }}</h1>
+      <button class="clear-btn" @click="clear()">Clear Filters/Search</button>
     </div>
 
     <div class="flex between next-prev mb-4">
@@ -38,22 +39,33 @@ export default Vue.extend({
   name: 'IndexPage',
   computed: {
     displayPokemonData(): Pokemon[] | undefined {
-      return this.pokemon?.items || this.basePokemonData?.items
-    },
-    dataAvail(): boolean {
-      return !!this.displayPokemonData?.length
+      return this.pokemon?.items || this.basePokemonData?.items;
     },
     ...mapGetters(['count']),
     ...(mapState([
       'searchMessage',
       'currentPage',
       'basePokemonData',
+      'viewingFavorites',
       'pokemon',
       'limit',
       'loading',
-      'viewingFavorites',
+      'searchQuery',
       'selectedType'
     ]) as RootStateMapped<RootState>),
+    dataAvail(): boolean {
+      return !!(this.displayPokemonData as any[])?.length;
+    },
+    pageTitle() {
+      if (this.viewingFavorites) {
+        return 'Favorites'
+      } else if (this.searchQuery) {
+        return `Results for "${this.searchQuery}"`;
+      } else if (this.selectedType) {
+        return `${this.selectedType} Pokemon`;
+      }
+      return 'All Pokemon'
+    }
   },
   methods: {
     async navigatePage(increment: boolean): Promise<void> {
@@ -63,8 +75,6 @@ export default Vue.extend({
         this.$store.commit('decrementPage')
       }
       await this.$store.dispatch('getPokemon', {
-        isFavorite: this.viewingFavorites as boolean,
-        type: this.selectedType as string,
         errorMessage: 'Error Navigating Page'
       })
     },
@@ -89,6 +99,9 @@ export default Vue.extend({
   .flex {
     height: -webkit-fill-available;
   }
+}
+.clear-btn {
+  font-weight: 600;
 }
 .card-loading {
   background-color: grey;

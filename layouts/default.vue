@@ -2,21 +2,30 @@
   <div class="default-layout">
     <header class="">
       <div class="header-content">
-        <div to="/" class="main-logo" @click="navHome()">
+        <div to="/" class="main-logo pointer" role="button" aria-label="Go to home page" @click="navHome()">
           <img src="https://assets.pokemon.com/assets/cms2/img/misc/gus/buttons/logo-pokemon-79x45.png" alt="site_slug">
         </div>
-        <input v-model="searchQuery" type="text" placeholder="Search" aria-placeholder="Search" @keypress.enter="search()">
+
+        <input
+          v-model="query"
+          type="text"
+          placeholder="Search"
+          aria-placeholder="Search"
+          @keypress.enter="search()"
+        >
+
         <button class="search-btn" @click="search()">Search</button>
         <button class="fav-btn" @click="viewFavorites()">Favorites</button>
-        <select v-if="types && types.length" id="types" v-model="type" name="types">
+
+        <select v-if="types && types.length" id="types" v-model="type" name="types pointer">
           <option value="">Select Type</option>
           <option v-for="typeName in types" :key="typeName" :value="typeName">{{ typeName }}</option>
         </select>
       </div>
     </header>
-    <div class="main-content">
+    <main class="main-content">
       <Nuxt />
-    </div>
+    </main>
     <footer class="">
       <div class="footer-content flex center">
         Website made by Josh Gordon - 2022
@@ -33,41 +42,37 @@ export default Vue.extend({
   name: 'LayoutDefault',
   data() {
     return {
-      searchQuery: '',
       type: '',
+      query: ''
     };
   },
   async fetch(): Promise<void> {
     await this.$store.dispatch('baseRequest')
   },
   computed: {
-    ...mapState(['types','viewingFavorites',]),
+    ...mapState(['types','viewingFavorites','searchQuery']),
   },
   watch: {
-    async type(newType: string, oldtype: string): Promise<void> {
-      if (newType !== oldtype) {
-        await this.navHome()
-        this.$store.commit('setType', newType)
-        await this.$store.dispatch('getPokemon', {
-          type: newType,
-          errorMessage: 'Error Fetching Pokemon By Type'
-        })
-      }
+    async type(newType: string): Promise<void> {
+      this.$store.commit('setType', newType)
+      await this.$store.dispatch('getPokemon', {
+        errorMessage: 'Error Fetching Pokemon By Type'
+      })
+    },
+    query(newQuery: string) {
+      this.$store.commit('setSearchQuery', newQuery)
     }
   },
   methods: {
     async search(): Promise<void> {
-      await this.navHome()
       await this.$store.dispatch('getPokemon', {
-        searchQuery: this.searchQuery,
         errorMessage: 'Error Fetching Search Param'
       })
     },
     async viewFavorites(): Promise<void> {
       await this.navHome()
       this.$store.commit('setViewingFavorites', true)
-      await this.$store.dispatch('getPokemon', {
-        isFavorite: true,
+      await this.$store.dispatch('getPokemon', {         
         errorMessage: 'Error Fetching Favorites'
       })
     },
